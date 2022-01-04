@@ -3,13 +3,11 @@ package main.day6
 import main.Utils
 import scala.collection.mutable
 
-case class State(state: Int, gensLeft: Int)
-
 object Day6 extends App with Utils {
   val data = getData("src/resources/Day6.txt").split(",").map(_.toInt).toList
   val cache = mutable.Map.empty[(Int, Int), Long]
 
-  def computeDescendants(generationsLeft: Int, init: Int): Long = {
+  private def computeDescendants(generationsLeft: Int, init: Int): Long = {
     cache.get(generationsLeft, init) match {
       case None =>
         val descendants = for (gens <- generationsLeft - init until 0 by -7) yield computeDescendants(gens, 9)

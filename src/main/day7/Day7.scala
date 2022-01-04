@@ -2,8 +2,6 @@ package main.day7
 
 import main.Utils
 
-import scala.annotation.tailrec
-
 case class Index(diff: Int, index: Int)
 
 object Day7 extends App with Utils {
@@ -15,8 +13,8 @@ object Day7 extends App with Utils {
     input.map(init => (init - median).abs).sum
   }
 
-  def computeFuelConsumption(input: Seq[Int])(position: Int): Int =
-      input.flatMap(init => (init - position).abs to 0 by -1).sum
+  private def computeFuelConsumption(input: Seq[Int])(position: Int): Int =
+    input.flatMap(init => (init - position).abs to 0 by -1).sum
 
   def part2(input: Seq[Int]): Int =
     input.indices.map(computeFuelConsumption(input)).min
