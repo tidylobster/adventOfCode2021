@@ -1,4 +1,6 @@
-package main
+package main.day10
+
+import main.Utils
 
 import scala.collection.mutable
 
@@ -30,6 +32,7 @@ object Day10 extends App with Utils {
     reversedMap.getOrElse(chunk, throw new IllegalArgumentException(s"Unsupported chunk: $chunk"))
 
   private def isClosed(chunk: Char): Boolean = !isOpen(chunk)
+
   private def isOpen(chunk: Char): Boolean = chunk match {
     case '[' | '(' | '{' | '<' => true
     case ']' | ')' | '}' | '>' => false
