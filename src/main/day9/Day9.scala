@@ -25,16 +25,14 @@ object Day9 extends App with Utils {
   private def getLowestPoints(matrix: Matrix): Seq[Point] =
     for {
       i <- matrix.data.indices
-      j <- matrix.data(i).indices if isLowest(Point(j, i), matrix)
+      j <- matrix.data(i).indices if isLowestLocally(Point(j, i), matrix)
     } yield Point(j, i)
 
-  private def isLowest(value: Int, adjacent: Seq[Int]): Boolean =
-    value == (value +: adjacent).min && value != adjacent.min
+  private def isLowest(value: Int, others: Seq[Int]): Boolean =
+    value == (value +: others).min && value != others.min
 
-  private def isLowest(point: Point, matrix: Matrix): Boolean = {
-    val adjacent = point.getAdjacentPoints(matrix)
-    isLowest(matrix.get(point), adjacent.map(matrix.get))
-  }
+  private def isLowestLocally(point: Point, matrix: Matrix): Boolean =
+    isLowest(matrix.get(point), point.getAdjacentPoints(matrix).map(matrix.get))
 
   def part1(matrix: Matrix): Int =
     getLowestPoints(matrix).map(matrix.get).map(_ + 1).sum
@@ -53,8 +51,9 @@ object Day9 extends App with Utils {
     }
 
   def part2(matrix: Matrix): Int = {
-    val lowestPoints = getLowestPoints(matrix)
-    val basins = lowestPoints.map(getBasinPoints(matrix)).map(_.size)
+    val basins =
+      for (point <- getLowestPoints(matrix))
+      yield getBasinPoints(matrix)(point).size
     basins.sorted(Ordering[Int].reverse).take(3).product
   }
 
